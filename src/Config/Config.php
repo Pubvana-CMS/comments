@@ -1,0 +1,5 @@
+<?php
+
+$routePrepend = 'comments';
+
+return [];
