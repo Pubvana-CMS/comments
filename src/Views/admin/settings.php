@@ -1,15 +1,13 @@
 <?php
 /** @var array $settings */
 
-$csrfToken = $this->app->csrf()->getToken();
-
 $val = function (string $key, $default = '') use ($settings) {
     return $settings[$key]['value'] ?? $default;
 };
 ?>
 
 <form method="post" action="/admin/comments/settings">
-    <input type="hidden" name="_csrf_token" value="<?= $csrfToken ?>">
+    <?= csrf_field() ?>
 
     <div class="row">
         <div class="col-lg-6">
@@ -75,7 +73,7 @@ $val = function (string $key, $default = '') use ($settings) {
     </div>
 
     <div class="mt-3">
-        <button type="submit" class="btn btn-primary">
+        <button type="submit" class="btn btn-outline-primary">
             <i class="ti ti-device-floppy me-1"></i>Save Settings
         </button>
     </div>

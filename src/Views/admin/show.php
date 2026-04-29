@@ -1,7 +1,6 @@
 <?php
 /** @var \Pubvana\Comments\Models\Comment $comment */
 
-$csrfToken = $this->app->csrf()->getToken();
 ?>
 
 <div class="mb-3">
@@ -35,10 +34,10 @@ $csrfToken = $this->app->csrf()->getToken();
                     <dd class="col-7">
                         <?php
                         $statusBadge = match ($comment->status) {
-                            'approved' => 'bg-success',
-                            'pending'  => 'bg-warning',
-                            'rejected' => 'bg-danger',
-                            default    => 'bg-secondary',
+                            'approved' => 'bg-success-lt',
+                            'pending'  => 'bg-warning-lt',
+                            'rejected' => 'bg-danger-lt',
+                            default    => 'bg-secondary-lt',
                         };
                         ?>
                         <span class="badge <?= $statusBadge ?>"><?= htmlspecialchars($comment->status) ?></span>
@@ -105,8 +104,8 @@ $csrfToken = $this->app->csrf()->getToken();
                 <div class="d-flex gap-2">
                     <?php if ($comment->status !== 'approved'): ?>
                         <form method="post" action="/admin/comments/<?= $comment->id ?>/approve">
-                            <input type="hidden" name="_csrf_token" value="<?= $csrfToken ?>">
-                            <button type="submit" class="btn btn-success">
+                            <?= csrf_field() ?>
+                            <button type="submit" class="btn btn-outline-success">
                                 <i class="ti ti-check me-1"></i>Approve
                             </button>
                         </form>
@@ -114,16 +113,16 @@ $csrfToken = $this->app->csrf()->getToken();
 
                     <?php if ($comment->status !== 'rejected'): ?>
                         <form method="post" action="/admin/comments/<?= $comment->id ?>/reject">
-                            <input type="hidden" name="_csrf_token" value="<?= $csrfToken ?>">
-                            <button type="submit" class="btn btn-warning">
+                            <?= csrf_field() ?>
+                            <button type="submit" class="btn btn-outline-warning">
                                 <i class="ti ti-x me-1"></i>Reject
                             </button>
                         </form>
                     <?php endif; ?>
 
                     <form method="post" action="/admin/comments/<?= $comment->id ?>/delete" onsubmit="return confirm('Delete this comment permanently?')">
-                        <input type="hidden" name="_csrf_token" value="<?= $csrfToken ?>">
-                        <button type="submit" class="btn btn-danger">
+                        <?= csrf_field() ?>
+                        <button type="submit" class="btn btn-outline-danger">
                             <i class="ti ti-trash me-1"></i>Delete
                         </button>
                     </form>
