@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pubvana\Comments\Controllers;
 
+use Enlivenapp\FlightSchool\Exception\ValidationException;
 use flight\Engine;
 
 class CommentsController
@@ -18,7 +19,7 @@ class CommentsController
     }
 
     /**
-     * Display comments for a content item (stub).
+     * Display comments for a content item.
      */
     public function index(string $type, string $id): void
     {
@@ -32,14 +33,70 @@ class CommentsController
     }
 
     /**
-     * Handle comment submission (stub).
+     * Handle comment submission.
      */
     public function store(string $type, string $id): void
     {
-        // @todo: implement public comment submission
-        $this->app->render('comments/form', [
-            'commentableType' => $type,
-            'commentableId'  => (int) $id,
-        ]);
+        $referrer = $this->app->request()->referrer ?: '/';
+        $service = $this->app->comments();
+
+        if (!$service->isEnabled()) {
+            $this->app->redirect($referrer);
+            return;
+        }
+
+        $post = $this->app->request()->data;
+        $userId = function_exists('user_id') ? user_id() : null;
+
+        if ($userId === null && !$service->allowsGuestComments()) {
+            $this->app->redirect($referrer);
+            return;
+        }
+
+        $body = trim((string) ($post->body ?? ''));
+
+        if ($body === '') {
+            $this->app->redirect($referrer);
+            return;
+        }
+
+        $data = [
+            'commentable_type' => $type,
+            'commentable_id'   => (int) $id,
+            'body'             => $body,
+            'ip_address'       => $this->app->request()->ip,
+        ];
+
+        if (!empty($post->parent_id)) {
+            $data['parent_id'] = (int) $post->parent_id;
+        }
+
+        $captchaField = $service->getCaptchaPostField();
+        if ($captchaField !== '') {
+            $data['captcha_token'] = (string) ($post->$captchaField ?? '');
+        }
+
+        if ($userId !== null) {
+            $data['user_id'] = $userId;
+        } else {
+            $guestName = trim((string) ($post->guest_name ?? ''));
+            if ($guestName === '') {
+                $this->app->redirect($referrer);
+                return;
+            }
+            $data['guest_name'] = $guestName;
+            $data['guest_email'] = trim((string) ($post->guest_email ?? ''));
+            $data['guest_website'] = trim((string) ($post->guest_website ?? ''));
+        }
+
+        try {
+            $service->create($data);
+        } catch (ValidationException $e) {
+            $separator = str_contains($referrer, '?') ? '&' : '?';
+            $this->app->redirect($referrer . $separator . 'comment_error=' . urlencode($e->getMessage()));
+            return;
+        }
+
+        $this->app->redirect($referrer);
     }
 }

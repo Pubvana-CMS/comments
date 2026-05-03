@@ -1,0 +1,21 @@
+{
+    "display_name": "Comments",
+    "description": "Nested, moderated comments for Pubvana with captcha support",
+    "category": "content",
+    "provides": {
+        "content_types": [],
+        "content_type_supports": [],
+        "blocks": [
+            {
+                "key": "pubvana.comments.recent",
+                "label": "Recent Comments",
+                "description": "Latest approved comments across the site"
+            },
+            {
+                "key": "pubvana.comments.toc",
+                "label": "Table of Contents",
+                "description": "Auto-generated from page headings"
+            }
+        ]
+    }
+}

@@ -6,6 +6,9 @@ namespace Pubvana\Comments\Controllers;
 
 use Pubvana\Admin\Controllers\AdminController;
 
+/**
+ * Admin controller for comment moderation — listing, approval, and deletion.
+ */
 class CommentsAdminController extends AdminController
 {
     /**
@@ -91,7 +94,7 @@ class CommentsAdminController extends AdminController
      */
     public function settings(): void
     {
-        $settings = $this->app->settings()->getClass('Comments');
+        $settings = $this->app->settings()->getClass('Comments', 'self');
 
         $this->render('admin/settings', [
             'pageTitle' => 'Comment Settings',
@@ -108,9 +111,10 @@ class CommentsAdminController extends AdminController
         unset($post['_csrf_token']);
 
         // Checkboxes won't POST when unchecked, so default booleans to false
+        $post['comments_enabled']     = !empty($post['comments_enabled']);
         $post['allow_guest_comments'] = !empty($post['allow_guest_comments']);
 
-        $this->app->settings()->saveClass('Comments', $post);
+        $this->app->settings()->saveClass('Comments', $post, 'self');
 
         $this->app->redirect('/admin/comments/settings');
     }

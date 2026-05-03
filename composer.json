@@ -6,10 +6,14 @@
     "require": {
         "php": "^8.1",
         "enlivenapp/flight-school": "^0.2",
-        "pubvana/admin": "*",
-        "enlivenapp/flight-shield": "*",
-        "enlivenapp/migrations": "*",
+        "enlivenapp/flight-settings": "^0.1",
+        "enlivenapp/flight-shield": "^0.1",
+        "enlivenapp/migrations": "^0.1",
+        "ezyang/htmlpurifier": "^4.19",
         "flightphp/active-record": "^0.7"
+    },
+    "suggest": {
+        "pubvana/admin": "Optional PHP admin head for comment moderation"
     },
     "autoload": {
         "psr-4": {

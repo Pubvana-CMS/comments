@@ -18,6 +18,14 @@ $val = function (string $key, $default = '') use ($settings) {
                 <div class="card-body">
                     <div class="mb-3">
                         <label class="form-check">
+                            <input type="checkbox" name="comments_enabled" value="1" class="form-check-input" <?= $val('comments_enabled', '1') ? 'checked' : '' ?>>
+                            <span class="form-check-label">Enable comments</span>
+                        </label>
+                        <small class="form-hint">Master toggle for the entire comment system.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-check">
                             <input type="checkbox" name="allow_guest_comments" value="1" class="form-check-input" <?= $val('allow_guest_comments') ? 'checked' : '' ?>>
                             <span class="form-check-label">Allow guest comments</span>
                         </label>
@@ -53,8 +61,8 @@ $val = function (string $key, $default = '') use ($settings) {
                         <label class="form-label">Provider</label>
                         <select name="captcha_provider" class="form-select">
                             <option value="none" <?= $val('captcha_provider', 'none') === 'none' ? 'selected' : '' ?>>None</option>
-                            <option value="hcaptcha" <?= $val('captcha_provider', 'none') === 'hcaptcha' ? 'selected' : '' ?>>hCaptcha</option>
-                            <option value="recaptcha" <?= $val('captcha_provider', 'none') === 'recaptcha' ? 'selected' : '' ?>>reCAPTCHA v2</option>
+                            <option value="hcaptcha" <?= $val('captcha_provider', 'none') === 'hcaptcha' ? 'selected' : '' ?>>hCaptcha (privacy respecting)</option>
+                            <option value="recaptcha" <?= $val('captcha_provider', 'none') === 'recaptcha' ? 'selected' : '' ?>>reCAPTCHA v2 (Google)</option>
                         </select>
                     </div>
 

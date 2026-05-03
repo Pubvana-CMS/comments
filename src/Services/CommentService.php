@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Pubvana\Comments\Services;
 
+use Enlivenapp\FlightSchool\Exception\ValidationException;
 use Flight;
 use Pubvana\Comments\Models\Comment;
 
@@ -31,7 +32,7 @@ class CommentService
      */
     private function setting(string $key): mixed
     {
-        return Flight::app()->settings()->get('Comments.' . $key);
+        return Flight::app()->settings()->get('Comments.' . $key, 'self');
     }
 
     /**
@@ -72,7 +73,7 @@ class CommentService
             $maxDepth = (int) ($this->setting('max_nesting_depth') ?? 3);
 
             if ($depth >= $maxDepth) {
-                throw new \RuntimeException('Maximum comment nesting depth reached.');
+                throw new ValidationException('Maximum comment nesting depth reached.');
             }
         }
 
@@ -82,7 +83,7 @@ class CommentService
             $ip = $data['ip_address'] ?? '';
 
             if (empty($token) || !$this->verifyCaptcha($token, $ip)) {
-                throw new \RuntimeException('Captcha verification failed.');
+                throw new ValidationException('Captcha verification failed.');
             }
         }
 
@@ -136,6 +137,14 @@ class CommentService
     public function countByStatus(?string $status = null): int
     {
         return $this->model->countByStatus($status);
+    }
+
+    /**
+     * Whether the comment system is globally enabled.
+     */
+    public function isEnabled(): bool
+    {
+        return (bool) ($this->setting('comments_enabled') ?? true);
     }
 
     /**

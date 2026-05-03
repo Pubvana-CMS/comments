@@ -1,5 +1,5 @@
 <?php
 
-$routePrepend = 'comments';
-
-return [];
+return [
+    'routePrepend' => 'comments',
+];
