@@ -1,16 +1,16 @@
-<div class="block">
-    <div class="block-recent-comments">
+<div class="pv-block">
+    <div class="pv-comments-recent">
         {% if title %}
-        <h6 class="block-title">{{ title }}</h6>
+        <h6 class="pv-block-title">{{ title }}</h6>
         {% endif %}
         {% if comments %}
-        <ul class="block-ul">
+        <ul class="pv-block-ul">
             {% for comment in comments %}
-            <li class="block-li">
-                <span class="block-comment-author">{{ comment.author }}</span>
-                <span class="block-comment-on">on</span>
-                <a class="block-a" href="{{ comment.url }}">{{ comment.post_title }}</a>
-                <small class="block-meta">{{ comment.date | date('M j, Y') }}</small>
+            <li class="pv-block-li">
+                <span class="pv-comments-author">{{ comment.author }}</span>
+                <span class="pv-comments-on">on</span>
+                <a class="pv-block-a" href="{{ comment.url }}">{{ comment.post_title }}</a>
+                <small class="pv-block-meta">{{ comment.date | date('M j, Y') }}</small>
             </li>
             {% endfor %}
         </ul>

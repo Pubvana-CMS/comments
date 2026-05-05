@@ -1,0 +1,19 @@
+/* ── Pubvana Comments block styles ── */
+
+.pv-comments-recent {
+    /* recent comments block wrapper */
+}
+
+.pv-comments-author {
+    font-weight: 600;
+    font-size: .875rem;
+}
+
+.pv-comments-on {
+    color: #777;
+    font-size: .8rem;
+}
+
+footer .pv-comments-on {
+    color: rgba(255, 255, 255, .5);
+}

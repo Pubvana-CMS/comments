@@ -26,6 +26,13 @@ class Plugin implements PluginInterface
             return $instance;
         });
 
+        $app->adext('head', 'css', 'pubvana.comments', [
+            'priority' => 30,
+            'files'    => ['css/comments.css'],
+            'vendor'   => 'pubvana',
+            'package'  => 'comments',
+        ]);
+
         // Register admin menu with submenu
         $app->adext('menu', 'content', 'pubvana.comments', [
             'label'    => 'Comments',
